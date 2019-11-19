@@ -5,6 +5,9 @@
 		"factoryName": {
 			"value": "trainingdlDataFactory"
 		},
+		"AzureSqlDatabase_connectionString": {
+			"value": ""
+		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://trainingdlkeyvault.vault.azure.net/"
 		},
