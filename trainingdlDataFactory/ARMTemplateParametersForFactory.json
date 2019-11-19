@@ -8,6 +8,12 @@
 		"AzureSqlDatabase_connectionString": {
 			"value": ""
 		},
+		"AzureBlobStorageProccessed_connectionString": {
+			"value": ""
+		},
+		"AzureSynapseAnalytics_connectionString": {
+			"value": ""
+		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://trainingdlkeyvault.vault.azure.net/"
 		}
