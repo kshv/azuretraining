@@ -43,7 +43,61 @@
 						"value": "@activity('GetProcessedBlobs').output.value",
 						"type": "Expression"
 					},
-					"isSequential": true
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Set BlobName",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "BlobName",
+								"value": {
+									"value": "@{item().BlobName}",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set BlobPath",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "BlobPath",
+								"value": {
+									"value": "@{item().BlobName}",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Container",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set BlobName",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "Set BlobPath",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Container",
+								"value": {
+									"value": "@{substring(item().Path,0,indexof(item().Path,item().BlobName))}",
+									"type": "Expression"
+								}
+							}
+						}
+					]
 				}
 			}
 		],
