@@ -3,22 +3,30 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Set variable1",
-				"type": "SetVariable",
+				"name": "GetProcessedBlobs",
+				"type": "Lookup",
 				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "variab",
-					"value": "qq"
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[uspGetProcessableBlobs]"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlDataSet",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
 				}
 			}
 		],
-		"variables": {
-			"variab": {
-				"type": "String",
-				"defaultValue": "aa"
-			}
-		},
 		"annotations": []
 	}
 }
