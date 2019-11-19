@@ -3,10 +3,14 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Append variable1",
-				"type": "AppendVariable",
+				"name": "Set variable1",
+				"type": "SetVariable",
 				"dependsOn": [],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "variab",
+					"value": "qq"
+				}
 			}
 		],
 		"variables": {
