@@ -59,35 +59,9 @@
 							}
 						},
 						{
-							"name": "Set BlobPath",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "BlobPath",
-								"value": {
-									"value": "@{item().BlobName}",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "Set Container",
 							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Set BlobName",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								},
-								{
-									"activity": "Set BlobPath",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "Container",
@@ -100,7 +74,20 @@
 						{
 							"name": "Copy data to warehouse",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set Container",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "Set BlobName",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "7.00:00:00",
 								"retry": 0,
@@ -223,15 +210,52 @@
 									"type": "DatasetReference"
 								}
 							]
+						},
+						{
+							"name": "Stored Procedure to update ProcessedBlobs",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy data to warehouse",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[uspUpdateBlobMetadata]",
+								"storedProcedureParameters": {
+									"dlsLocation": {
+										"value": null,
+										"type": "String"
+									},
+									"recordId": {
+										"value": {
+											"value": "@{item().RecordId}",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "AzureSqlDatabase",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}
 			}
 		],
 		"variables": {
-			"BlobPath": {
-				"type": "String"
-			},
 			"BlobName": {
 				"type": "String"
 			},
